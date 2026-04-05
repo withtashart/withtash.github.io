@@ -67,34 +67,132 @@
         .itinerary-list { list-style: none; padding: 0; }
         .itinerary-list li { margin-bottom: 15px; border-left: 2px solid var(--accent); padding-left: 15px; }
     </style>
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WithTash 旅遊行程</title>
+    <style>
+        :root { --accent: #007aff; --bg: #f2f2f7; --line: #d1d1d6; }
+        body { font-family: -apple-system, sans-serif; background: #fafafa; margin: 0; padding: 20px; color: #1c1c1e; }
+        
+        /* 時間軸容器 */
+        .timeline { position: relative; max-width: 600px; margin: 0 auto; padding-left: 20px; }
+        
+        /* 垂直線：調整位置以對齊圓點 */
+        .timeline::before { 
+            content: ''; 
+            position: absolute; 
+            left: 25px; 
+            top: 0; 
+            bottom: 0; 
+            width: 2px; 
+            background: var(--line); 
+        }
+
+        /* 單個行程區塊：每一天 */
+        .day-section { 
+            position: relative; 
+            padding-bottom: 40px; 
+            margin-top: 40px; 
+        }
+        
+        /* 日期標籤：精準對齊圓點 */
+        .date-label {
+            position: absolute;
+            left: 0; /* 從容器最左側開始 */
+            top: -28px; 
+            font-weight: 600;
+            font-size: 14px;
+            color: #8e8e93;
+            z-index: 3;
+        }
+
+        /* 圓點：固定在線條上 */
+        .dot { 
+            position: absolute; 
+            left: 21px; 
+            top: -24px; /* 讓圓點跟日期文字水平對齊 */
+            width: 10px; 
+            height: 10px; 
+            background: white; 
+            border: 2px solid var(--accent); 
+            border-radius: 50%; 
+            z-index: 2; 
+        }
+
+        /* 卡片樣式 */
+        .card { 
+            background: white; 
+            border-radius: 16px; 
+            overflow: hidden; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+            cursor: pointer; 
+            margin-left: 45px; 
+            margin-bottom: 16px !important; 
+            transition: transform 0.2s; 
+        }
+        .card:last-child { margin-bottom: 0 !important; }
+        .card:active { transform: scale(0.98); }
+        
+        .card img { 
+            width: 100%; 
+            height: auto; 
+            max-height: 200px;
+            object-fit: cover; 
+            display: block;
+        }
+
+        .card-body { padding: 16px; }
+        .category { display: inline-block; background: #e5e5ea; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; color: var(--accent); margin-bottom: 8px; }
+        .subtitle { display: block; font-size: 0.85rem; color: #636366; font-weight: 600; margin-bottom: 2px; }
+        .title { font-size: 1.25rem; font-weight: bold; margin-bottom: 6px; }
+        .excerpt { font-size: 0.9rem; color: #636366; line-height: 1.4; }
+
+        /* 全頁詳細內容 */
+        .full-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 100; overflow-y: auto; display: none; padding-bottom: 50px; }
+        .full-page.active { display: block; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+        .close-btn { position: sticky; top: 20px; left: 20px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; z-index: 101; cursor: pointer; }
+        .full-content { padding: 20px; max-width: 600px; margin: 0 auto; }
+        .full-content img { width: 100%; border-radius: 12px; margin: 15px 0; }
+        .itinerary-list { list-style: none; padding: 0; }
+        .itinerary-list li { margin-bottom: 15px; border-left: 2px solid var(--accent); padding-left: 15px; }
+    </style>
 </head>
 <body>
+
 <div class="timeline">
-   <div class="day-section">
-    <div class="date-label">05/18</div>
-    <div class="dot"></div>
-    
-    <div class="card" onclick="openPage('day1_1')">
-        <div class="card-body">
-            <span class="category">台北往札幌</span>
-            <span class="subtitle">長榮 BR116</span>
-            <div class="title">10:10 - 15:00</div>
-            <p class="excerpt">桃園國際機場 T2 | 新千歲機場 1</p>
+    <div class="day-section">
+        <div class="date-label">05/18</div>
+        <div class="dot"></div>
+        
+        <div class="card" onclick="openPage('day1_1')">
+            <div class="card-body">
+                <span class="category">台北往札幌</span>
+                <span class="subtitle">長榮 BR116</span>
+                <div class="title">10:10 - 15:00</div>
+                <p class="excerpt">桃園國際機場 T2 | 新千歲機場 1</p>
+            </div>
         </div>
-    </div>
-    <div class="card" onclick="openPage('day1_2')">
-        <div class="card-body">
-            <span class="category">住宿</span>
-            <span class="subtitle">札幌車站</span>
-            <div class="title">札幌京王廣場飯店</div>
-            <img src="day1bus.png" alt="交通路線">
-            <p class="excerpt">先到飯店checkin，寄放行李</p>
+
+        <div class="card" onclick="openPage('day1_2')">
+            <div class="card-body">
+                <span class="category">住宿</span>
+                <span class="subtitle">札幌車站</span>
+                <div class="title">札幌京王廣場飯店</div>
+                <img src="截圖 2026-04-05 下午5.31.08.png" alt="住宿地點">
+                <p class="excerpt">先到飯店checkin，寄放行李</p>
+            </div>
         </div>
     </div>
 
     <div class="day-section">
         <div class="date-label">05/19</div>
         <div class="dot"></div>
+        
         <div class="card" onclick="openPage('day2')">
             <div class="card-body">
                 <span class="category">美食 ‧ 市場</span>
@@ -105,8 +203,13 @@
         </div>
     </div>
 
-      <div class="day-section">
-        <div class="date-label">05/20</div>
+    <div class="day-section">
+        <div class="date-label">05/20 (自由活動)</div>
+        <div class="dot"></div>
+        </div>
+
+    <div class="day-section">
+        <div class="date-label">05/21</div>
         <div class="dot"></div>
         <div class="card" onclick="openPage('day3')">
             <div class="card-body">
@@ -117,21 +220,17 @@
             </div>
         </div>
     </div>
-
-</div>
-        </div>
 </div>
 
 <div id="day1_2" class="full-page">
     <button class="close-btn" onclick="closePage('day1_2')">← 返回</button>
     <div class="full-content">
-        <h1>搭巴士到札幌車站</h1>
-        <img src="day1bus.png" alt="交通路線">
-        <p>這裡是詳細的文字介紹，你可以寫下當時的心情或注意事項。</p>
+        <h1>札幌京王廣場飯店</h1>
+        <img src="截圖 2026-04-05 下午5.31.08.png" alt="交通路線">
+        <p>飯店位於札幌車站附近，交通非常方便。</p>
         <ul class="itinerary-list">
-            <li><b>15:00</b> 抵達機場，購買巴士票。</li>
-            <li><b>18:30</b> 函館山纜車，建議提早半小時排隊。</li>
-            <li><b>20:30</b> 晚餐：幸運小丑漢堡本店。</li>
+            <li><b>15:30</b> 機場快線抵達札幌站</li>
+            <li><b>16:00</b> 辦理入住</li>
         </ul>
     </div>
 </div>
@@ -139,29 +238,26 @@
 <div id="day2" class="full-page">
     <button class="close-btn" onclick="closePage('day2')">← 返回</button>
     <div class="full-content">
-        <h1>Day 2：市場與古蹟</h1>
-        <p>今天的內容更加豐富...</p>
+        <h1>函館朝市</h1>
+        <p>一定要嘗試現釣烏賊！</p>
     </div>
 </div>
 
-    <div id="day3" class="full-page">
+<div id="day3" class="full-page">
     <button class="close-btn" onclick="closePage('day3')">← 返回</button>
     <div class="full-content">
-        <h1>Day 3：抵達函館</h1>
-        <img src="https://via.placeholder.com/800x400?text=函館山夜景大圖" alt="夜景">
-        <p>這裡是詳細的文字介紹，你可以寫下當時的心情或注意事項。</p>
-        <ul class="itinerary-list">
-            <li><b>15:00</b> 抵達機場，購買巴士票。</li>
-            <li><b>18:30</b> 函館山纜車，建議提早半小時排隊。</li>
-            <li><b>20:30</b> 晚餐：幸運小丑漢堡本店。</li>
-        </ul>
+        <h1>小樽散策</h1>
+        <p>浪漫的運河與玻璃工藝...</p>
     </div>
 </div>
 
 <script>
     function openPage(id) {
-        document.getElementById(id).classList.add('active');
-        document.body.style.overflow = 'hidden'; // 防止底層捲動
+        const page = document.getElementById(id);
+        if (page) {
+            page.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
     }
     function closePage(id) {
         document.getElementById(id).classList.remove('active');
