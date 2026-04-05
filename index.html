@@ -17,14 +17,15 @@
         .card:last-child { margin-bottom: 0 !important;}
         .date-label {
     position: absolute;
-    /* 原本是 left: -65px，現在改到右邊 */
-    right: 0; 
-    top: -25px; /* 讓它往上飄到卡片上方 */
-    width: auto; /* 寬度設為自動，字才不會被擠斷 */
-    text-align: right;
+    /* 這裡改成 left，數值大約是 0 或 5px，可以對齊標籤開頭 */
+    left: 0; 
+    /* 維持往上漂浮的高度 */
+    top: -28px; 
+    width: auto;
+    text-align: left; /* 文字改為靠左對齊 */
     font-weight: 600;
     font-size: 14px;
-    color: #8e8e93; /* 淡淡的灰色比較優雅 */
+    color: #8e8e93; /* 或者維持 var(--accent) */
 }
         .dot { position: absolute; left: 21px; top: 15px; width: 10px; height: 10px; background: white; border: 2px solid var(--accent); border-radius: 50%; z-index: 2; }
 
