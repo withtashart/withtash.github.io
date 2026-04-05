@@ -20,7 +20,19 @@
         /* 第一層卡片樣式 */
         .card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); cursor: pointer; margin-left: 45px; transition: transform 0.2s; }
         .card:active { transform: scale(0.98); }
-        .card img { width: 100%; height: 180px; object-fit: cover; }
+        .card img { 
+    width: 100%; 
+    height: 180px; 
+    object-fit: cover; 
+    
+    /* 新增這一行：預設不顯示圖片 */
+    display: none; 
+}
+
+/* 新增這一段：當圖片有設定真正的網址（src）時才顯示 */
+.card img[src^="http"]:not([src*="placeholder"]) {
+    display: block;
+}
         .card-body { padding: 16px; }
         .category { display: inline-block; background: #e5e5ea; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; color: var(--accent); margin-bottom: 8px; }
         .subtitle { 
@@ -48,22 +60,32 @@
 </head>
 <body>
 <div class="timeline">
-    <div class="day-section">
-        <div class="date-label">05/15</div>
-        <div class="dot"></div>
-        <div class="card" onclick="openPage('day1')">
-            <img src="https://via.placeholder.com/600x300?text=Day+1+Route" alt="地圖預覽">
-            <div class="card-body">
-                <span class="category">交通 ‧ 景點</span>
-                <span class="subtitle">函館機場 ➔ 市區</span> 
-                <div class="title">抵達函館與百萬夜景</div>
-                <p class="excerpt">搭乘接駁車前往市區，晚餐後前往函館山...</p>
-            </div>
+   <div class="day-section">
+    <div class="date-label">05/18</div>
+    <div class="dot"></div>
+    
+    <div class="card" onclick="openPage('day1_1')">
+        <div class="card-body">
+            <span class="category">台北往札幌</span>
+            <span class="subtitle">長榮 BR116</span>
+            <div class="title">10:10 - 15:00</div>
+            <p class="excerpt">桃園國際機場 T2 | 新千歲機場 1</p>
         </div>
     </div>
 
+    <div class="card" onclick="openPage('day1_2')">
+        <div class="card-body">
+            <span class="category">住宿</span>
+            <span class="subtitle"札幌車站</span> 
+            <div class="title"札幌京王廣場飯店</div>
+            <img src="截圖 2026-04-05 下午5.31.08.png" alt="夜景照片">
+            <p class="excerpt">先到飯店checkin，寄放行李</p>
+        </div>
+    </div>
+</div>
+
     <div class="day-section">
-        <div class="date-label">05/16</div>
+        <div class="date-label">05/19</div>
         <div class="dot"></div>
         <div class="card" onclick="openPage('day2')">
             <img src="https://via.placeholder.com/600x300?text=Day+2+Food" alt="美食預覽">
@@ -77,7 +99,7 @@
     </div>
 
       <div class="day-section">
-        <div class="date-label">05/17</div>
+        <div class="date-label">05/20</div>
         <div class="dot"></div>
         <div class="card" onclick="openPage('day3')">
             <img src="https://via.placeholder.com/600x300?text=Day+1+Route" alt="地圖預覽">
