@@ -8,30 +8,59 @@
         :root { --accent: #007aff; --bg: #f2f2f7; --line: #d1d1d6; }
         body { font-family: -apple-system, sans-serif; background: #fafafa; margin: 0; padding: 20px; color: #1c1c1e; }
         
-        /* 時間軸容器 */
-        .timeline { position: relative; max-width: 600px; margin: 0 auto; padding-left: 50px; }
-        .timeline::before { content: ''; position: absolute; left: 75px; top: 0; bottom: 0; width: 2px; background: var(--line); }
+/* 時間軸容器 */
+.timeline { 
+    position: relative; 
+    max-width: 600px; 
+    margin: 0 auto; 
+    padding-left: 50px; 
+}
 
-        /* 單個行程區塊 */
-        .day-section { position: relative; padding-bottom: 50px; margin-top: 30px; }
-        .card:last-child { margin-bottom: 0 !important;}
-       .date-label {
+/* 垂直線 */
+.timeline::before { 
+    content: ''; 
+    position: absolute; 
+    left: 25px; /* 修正線條位置 */
+    top: 0; 
+    bottom: 0; 
+    width: 2px; 
+    background: #d1d1d6; 
+}
+
+/* 每一天的區塊 */
+.day-section { 
+    position: relative; 
+    padding-bottom: 50px; 
+    margin-top: 30px; 
+}
+
+/* 日期標籤：修正後的位置 */
+.date-label {
     position: absolute;
-    /* 改用 right 搭配一個正數，這會讓日期「貼著」左側參考線向左排 */
-    /* 這樣不管日期多長，都不會壓到圓點 */
-    right: calc(100% - 35px); 
-    top: 15px; 
-    
-    width: auto;
-    white-space: nowrap;
+    left: -10px;    /* 讓它從線條左側開始排 */
+    top: 12px;
+    width: 45px;    /* 固定寬度 */
     text-align: right;
     font-weight: 600;
     font-size: 14px;
     color: #8e8e93;
+    white-space: nowrap;
 }
-        .dot { position: absolute; left: 21px; top: 15px; width: 10px; height: 10px; background: white; border: 2px solid var(--accent); border-radius: 50%; z-index: 2; }
 
-        /* 第一層卡片樣式 */
+/* 圓點：必須獨立出來，不能寫在 date-label 裡面 */
+.dot { 
+    position: absolute; 
+    left: 21px; 
+    top: 15px; 
+    width: 10px; 
+    height: 10px; 
+    background: white; 
+    border: 2px solid #007aff; 
+    border-radius: 50%; 
+    z-index: 2; 
+}
+
+     /* 第一層卡片樣式 */
         .card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); cursor: pointer; margin-left: 45px; margin-bottom: 20px !important; transition: transform 0.2s; }
         .card:active { transform: scale(0.98); }
         .card img { 
