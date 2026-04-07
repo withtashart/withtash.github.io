@@ -40,12 +40,10 @@
 }
 
 /* 新增這一段：當圖片有設定真正的網址（src）時才顯示 */
-.card img[src^="http"]:not([src*="placeholder"]) {
-    display: block;
-}
-        .card-body { padding: 16px; }
-        .category { display: inline-block; background: #e5e5ea; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; color: var(--accent); margin-bottom: 8px; }
-        .subtitle { 
+.card img[src^="http"]:not([src*="placeholder"]) {display: block;}
+.card-body { padding: 16px; }
+.category { display: inline-block; background: #e5e5ea; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; color: var(--accent); margin-bottom: 8px; }
+.subtitle { 
     display: block; 
     font-size: 0.85rem; 
     color: #636366;
@@ -100,14 +98,18 @@
         
         /* 日期標籤：精準對齊圓點 */
         .date-label {
-            position: absolute;
-            left: 0; /* 從容器最左側開始 */
-            top: -28px; 
-            font-weight: 600;
-            font-size: 14px;
-            color: #8e8e93;
-            z-index: 3;
-        }
+    position: absolute;
+    left: -45px; 
+    
+    /* top 數值微調到 8px，能讓日期文字中心對準圓點中心 */
+    top: 8px; 
+    
+    width: 60px;
+    text-align: right; /* 文字向右對齊，讓日期末端靠近圓點 */
+    font-weight: 600;
+    font-size: 14px;
+    color: #8e8e93;
+}
 
         /* 圓點：固定在線條上 */
         .dot { 
