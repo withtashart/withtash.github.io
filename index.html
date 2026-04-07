@@ -8,107 +8,15 @@
         :root { --accent: #007aff; --bg: #f2f2f7; --line: #d1d1d6; }
         body { font-family: -apple-system, sans-serif; background: #fafafa; margin: 0; padding: 20px; color: #1c1c1e; }
         
-/* 時間軸容器 */
-.timeline { 
-    position: relative; 
-    max-width: 600px; 
-    margin: 0 auto; 
-    padding-left: 50px; 
-}
-
-/* 垂直線 */
-.timeline::before { 
-    content: ''; 
-    position: absolute; 
-    left: 25px; /* 修正線條位置 */
-    top: 0; 
-    bottom: 0; 
-    width: 2px; 
-    background: #d1d1d6; 
-}
-
-/* 每一天的區塊 */
-.day-section { 
-    position: relative; 
-    padding-bottom: 50px; 
-    margin-top: 30px; 
-}
-
-/* 日期標籤：修正後的位置 */
-.date-label {
-    position: absolute;
-    left: 38px;    /* 讓它從線條左側開始排 */
-    top: -28px;
-    width: 45px;    /* 固定寬度 */
-    text-align: right;
-    font-weight: 600;
-    font-size: 14px;
-    color: #8e8e93;
-    white-space: nowrap;
-}
-
-/* 圓點：必須獨立出來，不能寫在 date-label 裡面 */
-.dot { 
-    position: absolute; 
-    left: -1px; 
-    top: 15px; 
-    width: 10px; 
-    height: 10px; 
-    background: white; 
-    border: 2px solid #007aff; 
-    border-radius: 50%; 
-    z-index: 2; 
-}
-
-     /* 第一層卡片樣式 */
-        .card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); cursor: pointer; margin-left: 45px; margin-bottom: 20px !important; transition: transform 0.2s; }
-        .card:active { transform: scale(0.98); }
-        .card img { 
-    width: 100%; 
-    height: 180px; 
-    object-fit: cover; 
-}
-
-/* 新增這一段：當圖片有設定真正的網址（src）時才顯示 */
-.card img[src^="http"]:not([src*="placeholder"]) {display: block;}
-.card-body { padding: 16px; }
-.category { display: inline-block; background: #e5e5ea; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; color: var(--accent); margin-bottom: 8px; }
-.subtitle { 
-    display: block; 
-    font-size: 0.85rem; 
-    color: #636366;
-    font-weight: 600
-    margin-bottom: 2px; 
-    letter-spacing: 0.5px;
-}
-        .title { font-size: 1.25rem; font-weight: bold; margin-bottom: 6px; }
-        .excerpt { font-size: 0.9rem; color: #636366; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-
-        /* 第二層：全頁詳細內容 (預設隱藏) */
-        .full-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 100; overflow-y: auto; display: none; padding-bottom: 50px; }
-        .full-page.active { display: block; animation: slideUp 0.3s ease-out; }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
-        .close-btn { position: sticky; top: 20px; left: 20px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; z-index: 101; cursor: pointer; }
-        .full-content { padding: 20px; max-width: 600px; margin: 0 auto; }
-        .full-content img { width: 100%; border-radius: 12px; margin: 15px 0; }
-        .itinerary-list { list-style: none; padding: 0; }
-        .itinerary-list li { margin-bottom: 15px; border-left: 2px solid var(--accent); padding-left: 15px; }
-    </style>
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WithTash 旅遊行程</title>
-    <style>
-        :root { --accent: #007aff; --bg: #f2f2f7; --line: #d1d1d6; }
-        body { font-family: -apple-system, sans-serif; background: #fafafa; margin: 0; padding: 20px; color: #1c1c1e; }
-        
         /* 時間軸容器 */
-        .timeline { position: relative; max-width: 600px; margin: 0 auto; padding-left: 20px; }
+        .timeline { 
+            position: relative; 
+            max-width: 600px; 
+            margin: 0 auto; 
+            padding-left: 80px; /* 增加左側間距給日期標籤 */
+        }
         
-        /* 垂直線：調整位置以對齊圓點 */
+        /* 垂直線 */
         .timeline::before { 
             content: ''; 
             position: absolute; 
@@ -119,33 +27,32 @@
             background: var(--line); 
         }
 
-        /* 單個行程區塊：每一天 */
+        /* 每一天的區塊 */
         .day-section { 
             position: relative; 
             padding-bottom: 40px; 
             margin-top: 40px; 
         }
-        
-        /* 日期標籤：精準對齊圓點 */
-        .date-label {
-    position: absolute;
-    left: -45px; 
-    
-    /* top 數值微調到 8px，能讓日期文字中心對準圓點中心 */
-    top: 8px; 
-    
-    width: 60px;
-    text-align: right; /* 文字向右對齊，讓日期末端靠近圓點 */
-    font-weight: 600;
-    font-size: 14px;
-    color: #8e8e93;
-}
 
-        /* 圓點：固定在線條上 */
+        /* 日期標籤：修正關鍵位置 */
+        .date-label {
+            position: absolute;
+            /* 讓它相對於 day-section 定位在左側 */
+            left: -75px; 
+            top: -2px; /* 配合圓點位置調整高度 */
+            width: 65px;
+            text-align: right;
+            font-weight: 600;
+            font-size: 14px;
+            color: #8e8e93;
+            white-space: nowrap;
+        }
+
+        /* 圓點：固定在垂直線上 */
         .dot { 
             position: absolute; 
-            left: 21px; 
-            top: -24px; /* 讓圓點跟日期文字水平對齊 */
+            left: -59px; /* 相對於 padding-left: 80px 的位置 */
+            top: 2px; 
             width: 10px; 
             height: 10px; 
             background: white; 
@@ -161,21 +68,11 @@
             overflow: hidden; 
             box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
             cursor: pointer; 
-            margin-left: 45px; 
             margin-bottom: 16px !important; 
             transition: transform 0.2s; 
         }
-        .card:last-child { margin-bottom: 0 !important; }
         .card:active { transform: scale(0.98); }
-        
-        .card img { 
-            width: 100%; 
-            height: auto; 
-            max-height: 200px;
-            object-fit: cover; 
-            display: block;
-        }
-
+        .card img { width: 100%; height: auto; max-height: 200px; object-fit: cover; display: block; }
         .card-body { padding: 16px; }
         .category { display: inline-block; background: #e5e5ea; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; color: var(--accent); margin-bottom: 8px; }
         .subtitle { display: block; font-size: 0.85rem; color: #636366; font-weight: 600; margin-bottom: 2px; }
@@ -186,7 +83,6 @@
         .full-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 100; overflow-y: auto; display: none; padding-bottom: 50px; }
         .full-page.active { display: block; animation: slideUp 0.3s ease-out; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-
         .close-btn { position: sticky; top: 20px; left: 20px; background: rgba(0,0,0,0.5); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; z-index: 101; cursor: pointer; }
         .full-content { padding: 20px; max-width: 600px; margin: 0 auto; }
         .full-content img { width: 100%; border-radius: 12px; margin: 15px 0; }
@@ -200,7 +96,6 @@
     <div class="day-section">
         <div class="date-label">05/18</div>
         <div class="dot"></div>
-        
         <div class="card" onclick="openPage('day1_1')">
             <div class="card-body">
                 <span class="category">台北往札幌</span>
@@ -209,13 +104,11 @@
                 <p class="excerpt">桃園國際機場 T2 | 新千歲機場 1</p>
             </div>
         </div>
-
         <div class="card" onclick="openPage('day1_2')">
             <div class="card-body">
                 <span class="category">住宿</span>
                 <span class="subtitle">札幌車站</span>
                 <div class="title">札幌京王廣場飯店</div>
-                <img src="截圖 2026-04-05 下午5.31.08.png" alt="住宿地點">
                 <p class="excerpt">先到飯店checkin，寄放行李</p>
             </div>
         </div>
@@ -224,7 +117,6 @@
     <div class="day-section">
         <div class="date-label">05/19</div>
         <div class="dot"></div>
-        
         <div class="card" onclick="openPage('day2')">
             <div class="card-body">
                 <span class="category">美食 ‧ 市場</span>
@@ -236,21 +128,9 @@
     </div>
 
     <div class="day-section">
-        <div class="date-label">05/20 (自由活動)</div>
+        <div class="date-label">05/20</div>
         <div class="dot"></div>
-        </div>
-
-    <div class="day-section">
-        <div class="date-label">05/21</div>
-        <div class="dot"></div>
-        <div class="card" onclick="openPage('day3')">
-            <div class="card-body">
-                <span class="category">美食 ‧ 市場</span>
-                <span class="subtitle">租車自駕</span> 
-                <div class="title">小樽美食</div>
-                <p class="excerpt">搭乘接駁車前往市區，晚餐後前往函館山...</p>
-            </div>
-        </div>
+        <div class="excerpt" style="color:#8e8e93; margin-left: 20px;">(自由活動)</div>
     </div>
 </div>
 
@@ -258,28 +138,11 @@
     <button class="close-btn" onclick="closePage('day1_2')">← 返回</button>
     <div class="full-content">
         <h1>札幌京王廣場飯店</h1>
-        <img src="截圖 2026-04-05 下午5.31.08.png" alt="交通路線">
         <p>飯店位於札幌車站附近，交通非常方便。</p>
         <ul class="itinerary-list">
             <li><b>15:30</b> 機場快線抵達札幌站</li>
             <li><b>16:00</b> 辦理入住</li>
         </ul>
-    </div>
-</div>
-
-<div id="day2" class="full-page">
-    <button class="close-btn" onclick="closePage('day2')">← 返回</button>
-    <div class="full-content">
-        <h1>函館朝市</h1>
-        <p>一定要嘗試現釣烏賊！</p>
-    </div>
-</div>
-
-<div id="day3" class="full-page">
-    <button class="close-btn" onclick="closePage('day3')">← 返回</button>
-    <div class="full-content">
-        <h1>小樽散策</h1>
-        <p>浪漫的運河與玻璃工藝...</p>
     </div>
 </div>
 
