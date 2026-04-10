@@ -8,69 +8,43 @@
         :root { --accent: #007aff; --bg: #f2f2f7; --line: #d1d1d6; }
         body { font-family: -apple-system, sans-serif; background: #fafafa; margin: 0; padding: 40px; color: #1c1c1e; }
         
-        /* 時間軸容器 */
-        .timeline { 
-            position: relative; 
-            max-width: 600px; 
-            margin: 0 auto; 
-            padding-left: 80px; /* 增加左側間距給日期標籤 */
-        }
-        
-        /* 垂直線 */
-        .timeline::before { 
-            content: ''; 
-            position: absolute; 
-            left: 44px; 
-            top: 0; 
-            bottom: 0; 
-            width: 2px; 
-            background: var(--line); 
+        /* --- 左右雙欄佈局 CSS --- */
+        .main-layout {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 50px; 
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
-        /* 每一天的區塊 */
-        .day-section { 
-            position: relative; 
-            padding-bottom: 30px; 
-            margin-top: 20px; 
-        }
+        /* 左邊放行程的容器 */
+        .schedule-column { flex: 1; max-width: 600px; } 
 
-        /* 日期標籤：修正關鍵位置 */
-        .date-label {
-            position: absolute;
-            /* 讓它相對於 day-section 定位在左側 */
-            left: -13px; 
-            top: -26px; /* 配合圓點位置調整高度 */
-            width: 65px;
-            text-align: right;
-            font-weight: 600;
-            font-size: 14px;
-            color: #8e8e93;
-            white-space: nowrap;
-        }
-
-        /* 圓點：固定在垂直線上 */
-        .dot { 
-            position: absolute; 
-            left: -42px; /* 相對於 padding-left: 80px 的位置 */
-            top: -22px; 
-            width: 10px; 
-            height: 10px; 
-            background: white; 
-            border: 2px solid var(--accent); 
-            border-radius: 50%; 
-            z-index: 2; 
-        }
-
-        /* 卡片樣式 */
-        .card { 
-            background: white; 
+        /* 右邊放筆記的容器 */
+        .notes-column { 
+            width: 320px; 
+            position: sticky; 
+            top: 20px; 
+            background: #fff; 
+            padding: 20px; 
             border-radius: 16px; 
-            overflow: hidden; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
-            cursor: pointer; 
-            margin-bottom: 20px !important; 
-            transition: transform 0.2s; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
         }
+
+        .notes-header { font-weight: bold; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .note-item { margin-bottom: 15px; border-bottom: 1px solid #f2f2f7; padding-bottom: 10px; }
+        .note-item-title { font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+        .note-item-text { font-size: 0.85rem; color: #444; line-height: 1.4; }
+
+        /* --- 原本的時間軸樣式 (維持不動) --- */
+        .timeline { position: relative; padding-left: 80px; }
+        .timeline::before { content: ''; position: absolute; left: 44px; top: 0; bottom: 0; width: 2px; background: var(--line); }
+        .day-section { position: relative; padding-bottom: 30px; margin-top: 20px; }
+        .date-label { position: absolute; left: -13px; top: -26px; width: 65px; text-align: right; font-weight: 600; font-size: 14px; color: #8e8e93; white-space: nowrap; }
+        .dot { position: absolute; left: -42px; top: -22px; width: 10px; height: 10px; background: white; border: 2px solid var(--accent); border-radius: 50%; z-index: 2; }
+        
+        .card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); cursor: pointer; margin-bottom: 20px !important; transition: transform 0.2s; }
         .card:active { transform: scale(0.98); }
         .card img { width: 100%; height: auto; max-height: 200px; object-fit: cover; display: block; }
         .card-body { padding: 16px; }
@@ -88,53 +62,69 @@
         .full-content img { width: 100%; border-radius: 12px; margin: 15px 0; }
         .itinerary-list { list-style: none; padding: 0; }
         .itinerary-list li { margin-bottom: 15px; border-left: 2px solid var(--accent); padding-left: 15px; }
+
+        /* 手機版自動切換 */
+        @media (max-width: 900px) {
+            .main-layout { flex-direction: column; align-items: center; }
+            .notes-column { width: 100%; max-width: 600px; position: static; margin-top: 40px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="timeline">
-    <div class="day-section">
-        <div class="date-label">05/18</div>
-        <div class="dot"></div>
-        <div class="card" onclick="openPage('day1_1')">
-            <div class="card-body">
-                <span class="category">台北往札幌</span>
-                <span class="subtitle">長榮 BR116</span>
-                <div class="title">10:10 - 15:00</div>
-                <p class="excerpt">桃園國際機場 T2 | 新千歲機場 1</p>
-            </div>
-        </div>
-        <div class="card" onclick="openPage('day1_2')">
-    <div class="card-body">
-        <span class="category">住宿</span>
-        <span class="subtitle">札幌車站</span>
-        <div class="title">札幌京王廣場飯店</div>
+<div class="main-layout">
     
-        <img src="day1bus.png" alt="住宿地點">
-        
-        <p class="excerpt">先到飯店checkin，寄放行李</p>
-    </div>
-</div>
-    </div>
+    <div class="schedule-column">
+        <div class="timeline">
+            <div class="day-section">
+                <div class="date-label">05/18</div>
+                <div class="dot"></div>
+                <div class="card" onclick="openPage('day1_1')">
+                    <div class="card-body">
+                        <span class="category">台北往札幌</span>
+                        <span class="subtitle">長榮 BR116</span>
+                        <div class="title">10:10 - 15:00</div>
+                        <p class="excerpt">桃園國際機場 T2 | 新千歲機場 1</p>
+                    </div>
+                </div>
+                <div class="card" onclick="openPage('day1_2')">
+                    <div class="card-body">
+                        <span class="category">住宿</span>
+                        <span class="subtitle">札幌車站</span>
+                        <div class="title">札幌京王廣場飯店</div>
+                        <img src="day1bus.png" alt="住宿地點">
+                        <p class="excerpt">先到飯店checkin，寄放行李</p>
+                    </div>
+                </div>
+            </div>
 
-    <div class="day-section">
-        <div class="date-label">05/19</div>
-        <div class="dot"></div>
-        <div class="card" onclick="openPage('day2')">
-            <div class="card-body">
-                <span class="category">美食 ‧ 市場</span>
-                <span class="subtitle">函館朝市體驗</span> 
-                <div class="title">函館朝市釣烏賊之旅</div>
-                <p class="excerpt">體驗活釣烏賊的樂趣，並品嚐最新鮮的刺身...</p>
+            <div class="day-section">
+                <div class="date-label">05/19</div>
+                <div class="dot"></div>
+                <div class="card" onclick="openPage('day2')">
+                    <div class="card-body">
+                        <span class="category">美食 ‧ 市場</span>
+                        <span class="subtitle">函館朝市體驗</span> 
+                        <div class="title">函館朝市釣烏賊之旅</div>
+                        <p class="excerpt">體驗活釣烏賊的樂趣，並品嚐最新鮮的刺身...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-section">
+                <div class="date-label">05/20</div>
+                <div class="dot"></div>
+                <div class="subtitle" style="margin-left: 10px;">自由活動</div>
             </div>
         </div>
     </div>
 
-    <div class="day-section">
-    <div class="date-label">05/20</div>
-    <div class="dot"></div>
-    <div class="subtitle" style="margin-left: 10px;">自由活動</div>
-</div>
+    <div class="notes-column">
+        <div class="notes-header">好友旅行隨筆 💡</div>
+        <div id="mock-notes-container">
+            </div>
+    </div>
+
 </div>
 
 <div id="day1_2" class="full-page">
@@ -151,6 +141,21 @@
 </div>
 
 <script>
+    // 模擬測試數據
+    const mockData = [
+        { title: "小樽必買", content: "LeTAO起司蛋糕一定要現場吃！", sender: "好友 A" },
+        { title: "自駕提醒", content: "租車要注意雪季雖然結束，但山路還是涼。", sender: "好友 B" }
+    ];
+
+    const container = document.getElementById('mock-notes-container');
+    container.innerHTML = mockData.map(note => `
+        <div class="note-item">
+            <div class="note-item-title">${note.title}</div>
+            <div class="note-item-text">${note.content}</div>
+            <div style="font-size: 0.7rem; color: #999; margin-top: 5px;">來自：${note.sender}</div>
+        </div>
+    `).join('');
+
     function openPage(id) {
         const page = document.getElementById(id);
         if (page) {
@@ -159,8 +164,11 @@
         }
     }
     function closePage(id) {
-        document.getElementById(id).classList.remove('active');
-        document.body.style.overflow = 'auto';
+        const page = document.getElementById(id);
+        if (page) {
+            page.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
     }
 </script>
 
