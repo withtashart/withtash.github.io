@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WithTash 旅遊行程</title>
+    <title>WithTash 旅遊行程 (含圖片筆記範例)</title>
     <style>
         :root { --accent: #007aff; --bg: #f2f2f7; --line: #d1d1d6; }
         body { font-family: -apple-system, sans-serif; background: #fafafa; margin: 0; padding: 40px; color: #1c1c1e; }
         
-        /* --- 左右雙欄佈局 CSS --- */
+        /* --- 左右雙欄佈局 CSS (維持不動) --- */
         .main-layout {
             display: flex;
             justify-content: center;
@@ -17,11 +17,7 @@
             max-width: 1100px;
             margin: 0 auto;
         }
-
-        /* 左邊放行程的容器 */
         .schedule-column { flex: 1; max-width: 600px; } 
-
-        /* 右邊放筆記的容器 */
         .notes-column { 
             width: 320px; 
             position: sticky; 
@@ -32,11 +28,6 @@
             box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
         }
 
-        .notes-header { font-weight: bold; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .note-item { margin-bottom: 15px; border-bottom: 1px solid #f2f2f7; padding-bottom: 10px; }
-        .note-item-title { font-weight: 600; color: var(--accent); margin-bottom: 4px; }
-        .note-item-text { font-size: 0.85rem; color: #444; line-height: 1.4; }
-
         /* --- 原本的時間軸樣式 (維持不動) --- */
         .timeline { position: relative; padding-left: 80px; }
         .timeline::before { content: ''; position: absolute; left: 44px; top: 0; bottom: 0; width: 2px; background: var(--line); }
@@ -44,8 +35,8 @@
         .date-label { position: absolute; left: -13px; top: -26px; width: 65px; text-align: right; font-weight: 600; font-size: 14px; color: #8e8e93; white-space: nowrap; }
         .dot { position: absolute; left: -42px; top: -22px; width: 10px; height: 10px; background: white; border: 2px solid var(--accent); border-radius: 50%; z-index: 2; }
         
+        /* 原本的行程卡片樣式 */
         .card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); cursor: pointer; margin-bottom: 20px !important; transition: transform 0.2s; }
-        .card:active { transform: scale(0.98); }
         .card img { width: 100%; height: auto; max-height: 200px; object-fit: cover; display: block; }
         .card-body { padding: 16px; }
         .category { display: inline-block; background: #E9EEF3; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; color: var(--accent); margin-bottom: 8px; }
@@ -53,7 +44,21 @@
         .title { font-size: 1.25rem; font-weight: bold; margin-bottom: 6px; }
         .excerpt { font-size: 0.9rem; color: #636366; line-height: 1.4; }
 
-        /* 全頁詳細內容 */
+        /* --- 修正與新增的筆記卡片 CSS --- */
+        .notes-header { font-weight: bold; font-size: 1.2rem; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .note-item { margin-bottom: 15px; border-bottom: 1px solid #f2f2f7; padding-bottom: 15px; }
+        .note-item-title { font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+        .note-item-text { font-size: 0.85rem; color: #444; line-height: 1.4; margin-bottom: 8px; }
+        
+        /* 💡 新增：針對筆記圖片的樣式 (Japandi風，有圓角) */
+        .note-item img { 
+            width: 100%; 
+            border-radius: 8px; 
+            margin: 5px 0 10px 0; 
+            display: block;
+        }
+
+        /* 全頁詳細內容 (維持不動) */
         .full-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 100; overflow-y: auto; display: none; padding-bottom: 50px; }
         .full-page.active { display: block; animation: slideUp 0.3s ease-out; }
         @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
@@ -63,7 +68,7 @@
         .itinerary-list { list-style: none; padding: 0; }
         .itinerary-list li { margin-bottom: 15px; border-left: 2px solid var(--accent); padding-left: 15px; }
 
-        /* 手機版自動切換 */
+        /* 手機版適配 */
         @media (max-width: 900px) {
             .main-layout { flex-direction: column; align-items: center; }
             .notes-column { width: 100%; max-width: 600px; position: static; margin-top: 40px; }
@@ -97,30 +102,11 @@
                     </div>
                 </div>
             </div>
-
-            <div class="day-section">
-                <div class="date-label">05/19</div>
-                <div class="dot"></div>
-                <div class="card" onclick="openPage('day2')">
-                    <div class="card-body">
-                        <span class="category">美食 ‧ 市場</span>
-                        <span class="subtitle">函館朝市體驗</span> 
-                        <div class="title">函館朝市釣烏賊之旅</div>
-                        <p class="excerpt">體驗活釣烏賊的樂趣，並品嚐最新鮮的刺身...</p>
-                    </div>
-                </div>
             </div>
-
-            <div class="day-section">
-                <div class="date-label">05/20</div>
-                <div class="dot"></div>
-                <div class="subtitle" style="margin-left: 10px;">自由活動</div>
-            </div>
-        </div>
     </div>
 
     <div class="notes-column">
-        <div class="notes-header">好友旅行隨筆 💡</div>
+        <div class="notes-header">好友分享筆記 💡</div>
         <div id="mock-notes-container">
             </div>
     </div>
@@ -141,34 +127,52 @@
 </div>
 
 <script>
-    // 模擬測試數據
+    // 💡 關鍵修改：JavaScript 的模擬數據中加入了 `image` 欄位
     const mockData = [
-        { title: "小樽必買", content: "LeTAO起司蛋糕一定要現場吃！", sender: "好友 A" },
-        { title: "自駕提醒", content: "租車要注意雪季雖然結束，但山路還是涼。", sender: "好友 B" }
+        { 
+            title: "浪漫的小樽運河", 
+            content: "LeTAO起司蛋糕一定要現場吃！晚上運河點燈很美，建議晚餐後去散步。", 
+            sender: "好友 A",
+            // 使用公開版權的圖片網址 (小樽運河圖)
+            image: "https://images.unsplash.com/photo-1547823645-568d4d989f28?q=80&w=600&auto=format&fit=crop"
+        },
+        { 
+            title: "自駕行程提醒", 
+            content: "租車要注意雪季雖然結束，但山路還是涼，且部分小路會封閉。", 
+            sender: "好友 B",
+            image: null // 這則筆記沒有圖片
+        },
+        {
+            title: "函館夜景",
+            content: "建議日落前1小時就上山佔位，不然人會多到看不見。",
+            sender: "好友 A",
+            // 使用公開版權的圖片網址 (函館夜景圖)
+            image: "https://images.unsplash.com/photo-1518012675955-468ac7f0c15f?q=80&w=600&auto=format&fit=crop"
+        }
     ];
 
     const container = document.getElementById('mock-notes-container');
+    
+    // 💡 關鍵修改：在渲染 HTML 時，判斷是否有圖片，如果有就產生 <img> 標籤
     container.innerHTML = mockData.map(note => `
         <div class="note-item">
             <div class="note-item-title">${note.title}</div>
+            
+            ${note.image ? `<img src="${note.image}" alt="筆記圖片">` : ''}
+            
             <div class="note-item-text">${note.content}</div>
             <div style="font-size: 0.7rem; color: #999; margin-top: 5px;">來自：${note.sender}</div>
         </div>
     `).join('');
 
+    // 原本的詳細頁面邏輯 (維持不動)
     function openPage(id) {
         const page = document.getElementById(id);
-        if (page) {
-            page.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
+        if (page) { page.classList.add('active'); document.body.style.overflow = 'hidden'; }
     }
     function closePage(id) {
         const page = document.getElementById(id);
-        if (page) {
-            page.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
+        if (page) { page.classList.remove('active'); document.body.style.overflow = 'auto'; }
     }
 </script>
 
