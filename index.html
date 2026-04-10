@@ -11,9 +11,10 @@
         /* --- 左右雙欄佈局 CSS (維持不動) --- */
         .main-layout {
             display: flex;
+            flex-wrap: nowrap;
             justify-content: center;
             align-items: flex-start;
-            gap: 50px; 
+            gap: 40px; 
             max-width: 1100px;
             margin: 0 auto;
         }
@@ -27,7 +28,14 @@
             border-radius: 16px; 
             box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
         }
-
+ .notes-column img {
+    width: 100%;       /* 寬度填滿筆記欄 */
+    max-width: 100%;   /* 絕對不准超過筆記欄 */
+    height: auto;      /* 高度自動縮放，不變形 */
+    display: block;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
         /* --- 原本的時間軸樣式 (維持不動) --- */
         .timeline { position: relative; padding-left: 80px; }
         .timeline::before { content: ''; position: absolute; left: 44px; top: 0; bottom: 0; width: 2px; background: var(--line); }
